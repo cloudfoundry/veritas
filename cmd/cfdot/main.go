@@ -27,9 +27,14 @@ func main() {
 	retargs, err := parser.Parse()
 	if err != nil {
 		if err == commands.ErrShowHelpMessage || (len(retargs) == 1 && retargs[0] == "") {
+			command := os.Args[0]
+			writeSynopsis(command)
+
 			helpParser := flags.NewParser(&commands.CFdot, flags.IgnoreUnknown|flags.HelpFlag)
 			helpParser.NamespaceDelimiter = "-"
 			helpParser.ParseArgs([]string{"-h"})
+			helpParser.Command.Name = command
+
 			helpParser.WriteHelp(os.Stdout)
 			os.Exit(0)
 		} else {
@@ -37,4 +42,9 @@ func main() {
 			os.Exit(1)
 		}
 	}
+}
+
+func writeSynopsis(command string) {
+	fmt.Fprintln(os.Stdout, "SYNOPSIS:")
+	fmt.Fprintf(os.Stdout, "  %s: A command-line tool to interact with a Cloud Foundry Diego deployment.\n\n", command)
 }

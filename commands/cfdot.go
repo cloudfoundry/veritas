@@ -8,7 +8,7 @@ import (
 )
 
 type CFdotCommand struct {
-	BBSOptions BBSOptionsGroup `group:"BBS Options"`
+	BBSOptions BBSOptionsGroup `hidden:"true"`
 	Domains    DomainsCommand  `command:"domains" description:"List all fresh domains."`
 	Help       HelpCommand     `command:"help" description:"Show usage information for commands."`
 
