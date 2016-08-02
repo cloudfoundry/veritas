@@ -10,7 +10,7 @@ import (
 )
 
 func init() {
-	addBBSFlags(domainsCmd)
+	AddBBSFlags(domainsCmd)
 	RootCmd.AddCommand(domainsCmd)
 }
 

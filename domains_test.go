@@ -13,7 +13,7 @@ import (
 	"github.com/onsi/gomega/ghttp"
 )
 
-var _ = Describe("domains", func() {
+var _ = Describe("Domains integration", func() {
 	Context("when the server responds with domains", func() {
 		BeforeEach(func() {
 			bbsServer.AppendHandlers(
@@ -207,36 +207,46 @@ var _ = Describe("domains", func() {
 				)
 			})
 
-			Context("when validating TLS related flags", func() {
-				It("verifies each FILE flag is associated with a readable file", func() {
+			Describe("TLS flag validation", func() {
+				Context("when the flags are invalid", func() {
+					Context("when a file flag points to a non-readable file", func() {
+						It("returns an error message", func() {
 
+						})
+						It("exits with status code 3", func() {
+
+						})
+					})
+					It("verifies each FILE flag is associated with a readable file", func() {
+
+					})
+					It("verifies if one of BBS client cert or client key files is set, the other must be as well", func() {
+					})
+					It("verifies if the skip-cert-verfy option is not enabled, the CA cert file must be provided", func() {
+					})
 				})
-				It("verifies if one of BBS client cert or client key files is set, the other must be as well", func() {
+
+				It("prefers flags over environment", func() {
+					os.Setenv("BBS_URL", "broken url")
+					os.Setenv("BBS_CA_CERT_FILE", "invalid/path/to/bbs/ca/cert/file")
+					os.Setenv("BBS_SKIP_CERT_VERIFY", "false")
+					os.Setenv("BBS_CERT_FILE", "invalid/path/to/bbs/cert/file")
+					os.Setenv("BBS_KEY_FILE", "invalid/path/to/key/file")
+
+					defer os.Unsetenv("BBS_URL")
+					defer os.Unsetenv("BBS_CA_CERT_FILE")
+					defer os.Unsetenv("BBS_SKIP_CERT_VERIFY")
+					defer os.Unsetenv("BBS_CERT_FILE")
+					defer os.Unsetenv("BBS_KEY_FILE")
+
+					cfdotCmd := exec.Command(cfdotPath, "--bbsURL", bbsTLSServer.URL(), "domains", "--bbsCACertFile")
+
+					sess, err := gexec.Start(cfdotCmd, GinkgoWriter, GinkgoWriter)
+					Expect(err).NotTo(HaveOccurred())
+
+					<-sess.Exited
+					Expect(sess.ExitCode()).To(Equal(0))
 				})
-				It("verifies if the skip-cert-verfy option is not enabled, the CA cert file must be provided", func() {
-				})
-			})
-
-			It("prefers flags over environment", func() {
-				os.Setenv("BBS_URL", "broken url")
-				os.Setenv("BBS_CA_CERT_FILE", "invalid/path/to/bbs/ca/cert/file")
-				os.Setenv("BBS_SKIP_CERT_VERIFY", "false")
-				os.Setenv("BBS_CERT_FILE", "invalid/path/to/bbs/cert/file")
-				os.Setenv("BBS_KEY_FILE", "invalid/path/to/key/file")
-
-				defer os.Unsetenv("BBS_URL")
-				defer os.Unsetenv("BBS_CA_CERT_FILE")
-				defer os.Unsetenv("BBS_SKIP_CERT_VERIFY")
-				defer os.Unsetenv("BBS_CERT_FILE")
-				defer os.Unsetenv("BBS_KEY_FILE")
-
-				cfdotCmd := exec.Command(cfdotPath, "--bbsURL", bbsTLSServer.URL(), "domains", "--bbsCACertFile")
-
-				sess, err := gexec.Start(cfdotCmd, GinkgoWriter, GinkgoWriter)
-				Expect(err).NotTo(HaveOccurred())
-
-				<-sess.Exited
-				Expect(sess.ExitCode()).To(Equal(0))
 			})
 		})
 	})
