@@ -12,8 +12,7 @@ import (
 var cfdotPath string
 
 var bbsServer *ghttp.Server
-
-const targetName = "testserver"
+var bbsTLSServer *ghttp.Server
 
 var _ = SynchronizedBeforeSuite(func() []byte {
 	binPath, err := gexec.Build("code.cloudfoundry.org/cfdot")
@@ -31,10 +30,12 @@ var _ = SynchronizedAfterSuite(func() {
 
 var _ = BeforeEach(func() {
 	bbsServer = ghttp.NewServer()
+	bbsTLSServer = ghttp.NewTLSServer()
 })
 
 var _ = AfterEach(func() {
 	bbsServer.Close()
+	bbsTLSServer.Close()
 })
 
 func TestIntegration(t *testing.T) {
