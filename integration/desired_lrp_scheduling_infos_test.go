@@ -12,7 +12,7 @@ import (
 	"github.com/onsi/gomega/ghttp"
 )
 
-var _ = FDescribe("desired-lrp-scheduling-infos", func() {
+var _ = Describe("desired-lrp-scheduling-infos", func() {
 	var sess *gexec.Session
 
 	BeforeEach(func() {

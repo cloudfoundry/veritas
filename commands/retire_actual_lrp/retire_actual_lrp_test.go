@@ -1,9 +1,9 @@
-package commands_test
+package retire_actual_lrp_command_test
 
 import (
 	"code.cloudfoundry.org/bbs/fake_bbs"
 	"code.cloudfoundry.org/bbs/models"
-	"code.cloudfoundry.org/cfdot/commands"
+	"code.cloudfoundry.org/cfdot/commands/retire_actual_lrp"
 
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
@@ -32,7 +32,7 @@ var _ = Describe("RetireActualLrp", func() {
 	})
 
 	It("retires the actual lrp", func() {
-		err := commands.RetireActualLRP(stdout, stderr, fakeBBSClient, []string{"process-guid", "1"}, "process-guid", 1)
+		err := retire_actual_lrp_command.RetireActualLRP(stdout, stderr, fakeBBSClient, []string{"process-guid", "1"}, "process-guid", 1)
 		Expect(err).NotTo(HaveOccurred())
 
 		Expect(fakeBBSClient.DesiredLRPByProcessGuidCallCount()).To(Equal(1))
@@ -54,7 +54,7 @@ var _ = Describe("RetireActualLrp", func() {
 		})
 
 		It("fails with a relevant error ", func() {
-			err := commands.RetireActualLRP(stdout, stderr, fakeBBSClient, nil, "process-guid", 2)
+			err := retire_actual_lrp_command.RetireActualLRP(stdout, stderr, fakeBBSClient, nil, "process-guid", 2)
 			Expect(err).To(HaveOccurred())
 			Expect(err).To(Equal(models.ErrUnknownError))
 		})
@@ -66,7 +66,7 @@ var _ = Describe("RetireActualLrp", func() {
 		})
 
 		It("fails with a relevant error ", func() {
-			err := commands.RetireActualLRP(stdout, stderr, fakeBBSClient, nil, "process-guid", 2)
+			err := retire_actual_lrp_command.RetireActualLRP(stdout, stderr, fakeBBSClient, nil, "process-guid", 2)
 			Expect(err).To(HaveOccurred())
 			Expect(err).To(Equal(models.ErrUnknownError))
 

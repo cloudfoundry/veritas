@@ -1,8 +1,10 @@
-package commands
+package set_domain_command
 
 import (
 	"io"
 	"time"
+
+	. "code.cloudfoundry.org/cfdot/commands"
 
 	"code.cloudfoundry.org/bbs"
 
@@ -38,7 +40,7 @@ func setDomain(cmd *cobra.Command, args []string) error {
 		return NewCFDotError(cmd, err)
 	}
 
-	err = SetDomain(cmd.OutOrStdout(), cmd.OutOrStderr(), bbsClient, args, ttlAsInt)
+	err = SetDomain(cmd.OutOrStdout(), cmd.OutOrStderr(), bbsClient, args, TTLAsInt())
 	if err != nil {
 		return NewCFDotError(cmd, err)
 	}

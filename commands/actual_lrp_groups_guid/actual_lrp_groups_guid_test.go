@@ -1,9 +1,9 @@
-package commands_test
+package actual_lrp_groups_guid_command_test
 
 import (
 	"code.cloudfoundry.org/bbs/fake_bbs"
 	"code.cloudfoundry.org/bbs/models"
-	"code.cloudfoundry.org/cfdot/commands"
+	"code.cloudfoundry.org/cfdot/commands/actual_lrp_groups_guid"
 
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
@@ -44,7 +44,7 @@ var _ = Describe("ActualLrpGroupsGuid", func() {
 		})
 
 		It("prints a json stream of the actual lrp for a process id", func() {
-			err := commands.ActualLRPGroupsByProcessGuid(stdout, stderr, fakeBBSClient, []string{"test-id"})
+			err := actual_lrp_groups_guid_command.ActualLRPGroupsByProcessGuid(stdout, stderr, fakeBBSClient, []string{"test-id"})
 			Expect(err).NotTo(HaveOccurred())
 			Expect(stdout).To(gbytes.Say(`"state":"running"`))
 		})
@@ -56,7 +56,7 @@ var _ = Describe("ActualLrpGroupsGuid", func() {
 		})
 
 		It("fails with a relevant error", func() {
-			err := commands.ActualLRPGroupsByProcessGuid(stdout, stderr, fakeBBSClient, []string{"testid"})
+			err := actual_lrp_groups_guid_command.ActualLRPGroupsByProcessGuid(stdout, stderr, fakeBBSClient, []string{"testid"})
 			Expect(err).To(HaveOccurred())
 			Expect(err).To(Equal(models.ErrUnknownError))
 		})
@@ -75,7 +75,7 @@ var _ = Describe("ActualLrpGroupsGuid", func() {
 		})
 
 		It("prints a json stream of the actual lrp for a process id filtered by index", func() {
-			err := commands.ActualLRPGroupsByProcessGuidAndIndex(stdout, stderr, fakeBBSClient, []string{"test-id"}, 1)
+			err := actual_lrp_groups_guid_command.ActualLRPGroupsByProcessGuidAndIndex(stdout, stderr, fakeBBSClient, []string{"test-id"}, 1)
 			Expect(err).NotTo(HaveOccurred())
 			Expect(stdout).To(gbytes.Say(`"state":"running"`))
 			Expect(stdout).To(gbytes.Say(`"index":0`))

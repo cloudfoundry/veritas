@@ -1,8 +1,10 @@
-package commands
+package retire_actual_lrp_command
 
 import (
 	"errors"
 	"io"
+
+	. "code.cloudfoundry.org/cfdot/commands"
 
 	"code.cloudfoundry.org/bbs"
 	"code.cloudfoundry.org/bbs/models"

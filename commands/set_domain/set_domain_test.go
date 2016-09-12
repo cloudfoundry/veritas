@@ -1,9 +1,9 @@
-package commands_test
+package set_domain_command_test
 
 import (
 	"code.cloudfoundry.org/bbs/fake_bbs"
 	"code.cloudfoundry.org/bbs/models"
-	"code.cloudfoundry.org/cfdot/commands"
+	"code.cloudfoundry.org/cfdot/commands/set_domain"
 
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
@@ -28,7 +28,7 @@ var _ = Describe("Set Domain", func() {
 		})
 
 		It("prints a success message when a domain is given", func() {
-			err := commands.SetDomain(stdout, stderr, fakeBBSClient, []string{"anything"}, 40)
+			err := set_domain_command.SetDomain(stdout, stderr, fakeBBSClient, []string{"anything"}, 40)
 			Expect(err).NotTo(HaveOccurred())
 		})
 	})
@@ -39,7 +39,7 @@ var _ = Describe("Set Domain", func() {
 		})
 
 		It("fails with a relevant error", func() {
-			err := commands.SetDomain(stdout, stderr, fakeBBSClient, []string{"anything"}, 0)
+			err := set_domain_command.SetDomain(stdout, stderr, fakeBBSClient, []string{"anything"}, 0)
 			Expect(err).To(HaveOccurred())
 			Expect(err).To(Equal(models.ErrUnknownError))
 		})

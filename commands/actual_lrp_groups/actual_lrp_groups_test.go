@@ -1,9 +1,9 @@
-package commands_test
+package actual_lrp_groups_command_test
 
 import (
 	"code.cloudfoundry.org/bbs/fake_bbs"
 	"code.cloudfoundry.org/bbs/models"
-	"code.cloudfoundry.org/cfdot/commands"
+	"code.cloudfoundry.org/cfdot/commands/actual_lrp_groups"
 
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
@@ -42,7 +42,7 @@ var _ = Describe("ActualLRPGroups", func() {
 		})
 
 		It("prints a json stream of all the actual lrp groups", func() {
-			err := commands.ActualLRPGroups(stdout, stderr, fakeBBSClient, nil)
+			err := actual_lrp_groups_command.ActualLRPGroups(stdout, stderr, fakeBBSClient, nil)
 			Expect(err).NotTo(HaveOccurred())
 			Expect(stdout).To(gbytes.Say(`"state":"running"`))
 		})
@@ -54,7 +54,7 @@ var _ = Describe("ActualLRPGroups", func() {
 		})
 
 		It("fails with a relevant error", func() {
-			err := commands.ActualLRPGroups(stdout, stderr, fakeBBSClient, nil)
+			err := actual_lrp_groups_command.ActualLRPGroups(stdout, stderr, fakeBBSClient, nil)
 			Expect(err).To(HaveOccurred())
 			Expect(err).To(Equal(models.ErrUnknownError))
 		})

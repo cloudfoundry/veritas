@@ -1,9 +1,9 @@
-package commands_test
+package domains_command_test
 
 import (
 	"code.cloudfoundry.org/bbs/fake_bbs"
 	"code.cloudfoundry.org/bbs/models"
-	"code.cloudfoundry.org/cfdot/commands"
+	"code.cloudfoundry.org/cfdot/commands/domains"
 
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
@@ -28,7 +28,7 @@ var _ = Describe("Domains", func() {
 		})
 
 		It("prints a json stream of all the domains", func() {
-			err := commands.Domains(stdout, stderr, fakeBBSClient, nil)
+			err := domains_command.Domains(stdout, stderr, fakeBBSClient, nil)
 			Expect(err).NotTo(HaveOccurred())
 			Expect(stdout).To(gbytes.Say(`"domain-1"\n"domain-2"\n`))
 		})
@@ -40,7 +40,7 @@ var _ = Describe("Domains", func() {
 		})
 
 		It("returns an empty response", func() {
-			err := commands.Domains(stdout, stderr, fakeBBSClient, nil)
+			err := domains_command.Domains(stdout, stderr, fakeBBSClient, nil)
 			Expect(err).NotTo(HaveOccurred())
 			Expect(stdout.Contents()).To(BeEmpty())
 		})
@@ -52,7 +52,7 @@ var _ = Describe("Domains", func() {
 		})
 
 		It("fails with a relevant error", func() {
-			err := commands.Domains(stdout, stderr, fakeBBSClient, nil)
+			err := domains_command.Domains(stdout, stderr, fakeBBSClient, nil)
 			Expect(err).To(HaveOccurred())
 			Expect(err).To(Equal(models.ErrUnknownError))
 		})

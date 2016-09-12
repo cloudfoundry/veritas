@@ -1,10 +1,9 @@
 package desired_lrp_scheduling_infos_command_test
 
 import (
-	"desired_lrp_scheduling_infos_command"
-
 	"code.cloudfoundry.org/bbs/fake_bbs"
 	"code.cloudfoundry.org/bbs/models"
+	"code.cloudfoundry.org/cfdot/commands/desired_lrp_scheduling_infos"
 
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"

@@ -1,8 +1,10 @@
-package commands
+package domains_command
 
 import (
 	"encoding/json"
 	"io"
+
+	. "code.cloudfoundry.org/cfdot/commands"
 
 	"code.cloudfoundry.org/bbs"
 

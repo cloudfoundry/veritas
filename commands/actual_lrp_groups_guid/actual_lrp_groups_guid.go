@@ -1,4 +1,4 @@
-package commands
+package actual_lrp_groups_guid_command
 
 import (
 	"encoding/json"
@@ -6,6 +6,8 @@ import (
 	"fmt"
 	"io"
 	"os"
+
+	. "code.cloudfoundry.org/cfdot/commands"
 
 	"code.cloudfoundry.org/bbs"
 

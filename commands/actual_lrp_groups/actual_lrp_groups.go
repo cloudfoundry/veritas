@@ -1,8 +1,10 @@
-package commands
+package actual_lrp_groups_command
 
 import (
 	"encoding/json"
 	"io"
+
+	. "code.cloudfoundry.org/cfdot/commands"
 
 	"code.cloudfoundry.org/bbs"
 	"code.cloudfoundry.org/bbs/models"

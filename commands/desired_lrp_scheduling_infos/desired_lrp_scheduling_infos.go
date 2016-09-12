@@ -8,10 +8,13 @@ import (
 
 	"code.cloudfoundry.org/bbs"
 	"code.cloudfoundry.org/bbs/models"
+
 	"github.com/spf13/cobra"
 )
 
-var domain string
+var (
+	domain string
+)
 
 var desiredLRPSchedulingInfosCmd = &cobra.Command{
 	Use:   "desired-lrp-scheduling-infos",
