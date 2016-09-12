@@ -153,7 +153,7 @@ func BBSPrehook(cmd *cobra.Command, args []string) error {
 	return nil
 }
 
-func newBBSClient(cmd *cobra.Command) (bbs.Client, error) {
+func NewBBSClient(cmd *cobra.Command) (bbs.Client, error) {
 	var err error
 	var client bbs.Client
 

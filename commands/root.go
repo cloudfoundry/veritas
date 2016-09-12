@@ -5,7 +5,7 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var globalLogger = lager.NewLogger("cfdot")
+var GlobalLogger = lager.NewLogger("cfdot")
 
 var RootCmd = &cobra.Command{
 	Use:   "cfdot",

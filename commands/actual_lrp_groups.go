@@ -34,7 +34,7 @@ func actualLRPGroups(cmd *cobra.Command, args []string) error {
 	var err error
 	var bbsClient bbs.Client
 
-	bbsClient, err = newBBSClient(cmd)
+	bbsClient, err = NewBBSClient(cmd)
 	if err != nil {
 		return NewCFDotError(cmd, err)
 	}
@@ -48,7 +48,7 @@ func actualLRPGroups(cmd *cobra.Command, args []string) error {
 }
 
 func ActualLRPGroups(stdout, stderr io.Writer, bbsClient bbs.Client, args []string) error {
-	logger := globalLogger.Session("actualLRPGroups")
+	logger := GlobalLogger.Session("actualLRPGroups")
 
 	encoder := json.NewEncoder(stdout)
 	actualLRPFilter := models.ActualLRPFilter{}

@@ -33,7 +33,7 @@ func setDomain(cmd *cobra.Command, args []string) error {
 	var err error
 	var bbsClient bbs.Client
 
-	bbsClient, err = newBBSClient(cmd)
+	bbsClient, err = NewBBSClient(cmd)
 	if err != nil {
 		return NewCFDotError(cmd, err)
 	}
@@ -47,7 +47,7 @@ func setDomain(cmd *cobra.Command, args []string) error {
 }
 
 func SetDomain(stdout, stderr io.Writer, bbsClient bbs.Client, args []string, ttl int) error {
-	logger := globalLogger.Session("set-domain")
+	logger := GlobalLogger.Session("set-domain")
 
 	var duration = time.Duration(ttl) * time.Second
 

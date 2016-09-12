@@ -44,7 +44,7 @@ func retireActualLRP(cmd *cobra.Command, args []string) error {
 		return err
 	}
 
-	bbsClient, err = newBBSClient(cmd)
+	bbsClient, err = NewBBSClient(cmd)
 	if err != nil {
 		return NewCFDotError(cmd, err)
 	}
@@ -58,7 +58,7 @@ func retireActualLRP(cmd *cobra.Command, args []string) error {
 }
 
 func RetireActualLRP(stdout, stderr io.Writer, bbsClient bbs.Client, args []string, processGuid string, index int32) error {
-	logger := globalLogger.Session("retireActualLRP")
+	logger := GlobalLogger.Session("retireActualLRP")
 
 	desiredLRP, err := bbsClient.DesiredLRPByProcessGuid(logger, processGuid)
 	if err != nil {

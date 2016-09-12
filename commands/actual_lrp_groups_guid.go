@@ -41,7 +41,7 @@ func actualLRPGroupsByProcessGuid(cmd *cobra.Command, args []string) error {
 	var err error
 	var bbsClient bbs.Client
 
-	bbsClient, err = newBBSClient(cmd)
+	bbsClient, err = NewBBSClient(cmd)
 	if err != nil {
 		return NewCFDotError(cmd, err)
 	}
@@ -63,7 +63,7 @@ func actualLRPGroupsByProcessGuid(cmd *cobra.Command, args []string) error {
 }
 
 func ActualLRPGroupsByProcessGuidAndIndex(stdout, stderr io.Writer, bbsClient bbs.Client, args []string, index int) error {
-	logger := globalLogger.Session("actualLRPGroupsByProcessGuid")
+	logger := GlobalLogger.Session("actualLRPGroupsByProcessGuid")
 
 	processGuid := args[0]
 	actualLRPGroup, err := bbsClient.ActualLRPGroupByProcessGuidAndIndex(logger, processGuid, index)
@@ -77,7 +77,7 @@ func ActualLRPGroupsByProcessGuidAndIndex(stdout, stderr io.Writer, bbsClient bb
 }
 
 func ActualLRPGroupsByProcessGuid(stdout, stderr io.Writer, bbsClient bbs.Client, args []string) error {
-	logger := globalLogger.Session("actualLRPGroupsByProcessGuid")
+	logger := GlobalLogger.Session("actualLRPGroupsByProcessGuid")
 
 	processGuid := args[0]
 

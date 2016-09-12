@@ -26,7 +26,7 @@ func domains(cmd *cobra.Command, args []string) error {
 	var err error
 	var bbsClient bbs.Client
 
-	bbsClient, err = newBBSClient(cmd)
+	bbsClient, err = NewBBSClient(cmd)
 	if err != nil {
 		return NewCFDotError(cmd, err)
 	}
@@ -40,7 +40,7 @@ func domains(cmd *cobra.Command, args []string) error {
 }
 
 func Domains(stdout, stderr io.Writer, bbsClient bbs.Client, args []string) error {
-	logger := globalLogger.Session("domains")
+	logger := GlobalLogger.Session("domains")
 
 	encoder := json.NewEncoder(stdout)
 	domains, err := bbsClient.Domains(logger)
