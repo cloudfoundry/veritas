@@ -2,6 +2,7 @@ package commands_test
 
 import (
 	"encoding/json"
+	"fmt"
 	"io/ioutil"
 	"os"
 
@@ -41,7 +42,7 @@ var _ = FDescribe("CreateDesiredLRP", func() {
 	})
 
 	It("creates the desired lrp", func() {
-		err := commands.CreateDesiredLRP(cmd, stdout, stderr, fakeBBSClient, string(spec))
+		err := commands.CreateDesiredLRP(stdout, stderr, fakeBBSClient, spec)
 		Expect(err).NotTo(HaveOccurred())
 
 		Expect(fakeBBSClient.DesireLRPCallCount()).To(Equal(1))
@@ -55,19 +56,23 @@ var _ = FDescribe("CreateDesiredLRP", func() {
 		BeforeEach(func() {
 			f, err := ioutil.TempFile(os.TempDir(), "spec_file")
 			Expect(err).NotTo(HaveOccurred())
+			fmt.Println(err)
 			defer f.Close()
-			Expect(f.Write(spec)).To(Succeed())
+			_, err = f.Write(spec)
+			f.Sync()
+
+			//Expect(f.Write(spec)).To(Succeed())
+			fmt.Println(err)
 			filename = f.Name()
 		})
 
-		It("creates the desired lrp", func() {
-			err := commands.CreateDesiredLRP(cmd, stdout, stderr, fakeBBSClient, "@"+filename)
-			Expect(err).NotTo(HaveOccurred())
+		It("validates the input file successfully", func() {
 
-			Expect(fakeBBSClient.DesireLRPCallCount()).To(Equal(1))
-			_, lrp := fakeBBSClient.DesireLRPArgsForCall(0)
-			Expect(lrp).To(Equal(expectedDesiredLRP))
+			args := []string{"@" + filename}
+			_, err := commands.ValidateCreateDesiredLRPArguments(args)
+			Expect(err).NotTo(HaveOccurred())
 		})
+
 	})
 
 	Context("when the bbs errors", func() {
@@ -76,7 +81,7 @@ var _ = FDescribe("CreateDesiredLRP", func() {
 		})
 
 		It("fails with a relevant error", func() {
-			err := commands.CreateDesiredLRP(cmd, stdout, stderr, fakeBBSClient, "{}")
+			err := commands.CreateDesiredLRP(stdout, stderr, fakeBBSClient, []byte("{}"))
 			Expect(err).To(HaveOccurred())
 			Expect(err).To(Equal(models.ErrUnknownError))
 		})
