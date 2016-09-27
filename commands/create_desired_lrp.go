@@ -53,7 +53,7 @@ func ValidateCreateDesiredLRPArguments(args []string) ([]byte, error) {
 	var err error
 	var spec []byte
 	argValue := args[0]
-	if strings.HasPrefix("@", argValue) {
+	if strings.HasPrefix(argValue, "@") {
 		_, err := os.Stat(argValue[1:])
 		if err != nil {
 			return nil, err

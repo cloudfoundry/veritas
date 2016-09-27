@@ -2,7 +2,6 @@ package commands_test
 
 import (
 	"encoding/json"
-	"fmt"
 	"io/ioutil"
 	"os"
 
@@ -16,7 +15,7 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var _ = FDescribe("CreateDesiredLRP", func() {
+var _ = Describe("CreateDesiredLRP", func() {
 	var (
 		fakeBBSClient      *fake_bbs.FakeClient
 		returnedError      error
@@ -56,18 +55,13 @@ var _ = FDescribe("CreateDesiredLRP", func() {
 		BeforeEach(func() {
 			f, err := ioutil.TempFile(os.TempDir(), "spec_file")
 			Expect(err).NotTo(HaveOccurred())
-			fmt.Println(err)
 			defer f.Close()
 			_, err = f.Write(spec)
-			f.Sync()
-
-			//Expect(f.Write(spec)).To(Succeed())
-			fmt.Println(err)
+			Expect(err).NotTo(HaveOccurred())
 			filename = f.Name()
 		})
 
 		It("validates the input file successfully", func() {
-
 			args := []string{"@" + filename}
 			_, err := commands.ValidateCreateDesiredLRPArguments(args)
 			Expect(err).NotTo(HaveOccurred())
