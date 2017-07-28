@@ -17,6 +17,7 @@ Usage:
   cfdot [command]
 
 Available Commands:
+  activate-lrp-definition      Activate the given definition id
   actual-lrp-groups            List actual LRP groups
   actual-lrp-groups-for-guid   List actual LRP groups for a process guid
   cancel-task                  Cancel task
@@ -25,8 +26,10 @@ Available Commands:
   claim-lock                   Claim Locket lock
   claim-presence               Claim Locket presence
   create-desired-lrp           Create a desired LRP
+  create-lrp-deployment        Create a desired LRP Deployment
   create-task                  Create a Task
   delete-desired-lrp           Delete a desired LRP
+  delete-lrp-deployment        Delete a desired LRP
   delete-task                  Delete a Task
   desired-lrp                  Show the specified desired LRP
   desired-lrp-scheduling-infos List desired LRP scheduling infos
@@ -43,6 +46,7 @@ Available Commands:
   task-events                  Subscribe to BBS Task events
   tasks                        List tasks in BBS
   update-desired-lrp           Update a desired LRP
+  update-lrp-deployment        update a desired LRP Deployment
 
 Flags:
   -h, --help   help for cfdot
