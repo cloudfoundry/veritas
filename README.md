@@ -37,6 +37,7 @@ Available Commands:
   domains                      List domains
   help                         Get help on [command]
   locks                        List Locket locks
+  lrp-deployments              List all LRP Deployments, optionally filtering on specific deployment IDs
   lrp-events                   Subscribe to BBS LRP events
   presences                    List Locket presences
   release-lock                 Release Locket lock
