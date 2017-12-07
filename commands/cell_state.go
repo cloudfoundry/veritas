@@ -33,7 +33,7 @@ func cellState(cmd *cobra.Command, args []string) error {
 		return NewCFDotValidationError(cmd, err)
 	}
 
-	bbsClient, err := helpers.NewBBSClient(cmd, clientConfig)
+	bbsClient, err := helpers.NewBBSClient(cmd, BBSClientConfig)
 	if err != nil {
 		return NewCFDotError(cmd, err)
 	}
@@ -46,9 +46,9 @@ func cellState(cmd *cobra.Command, args []string) error {
 	stateClient := cfhttp.NewCustomTimeoutClient(10 * time.Second)
 
 	repTLSConfig := &rep.TLSConfig{
-		CaCertFile: clientConfig.CACertFile,
-		CertFile:   clientConfig.CertFile,
-		KeyFile:    clientConfig.KeyFile,
+		CaCertFile: BBSClientConfig.TLSConfig.CACertFile,
+		CertFile:   BBSClientConfig.TLSConfig.CertFile,
+		KeyFile:    BBSClientConfig.TLSConfig.KeyFile,
 	}
 	repClientFactory, err := rep.NewClientFactory(httpClient, stateClient, repTLSConfig)
 	if err != nil {
