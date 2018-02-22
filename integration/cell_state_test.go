@@ -271,15 +271,19 @@ var _ = Describe("cell-state", func() {
 
 		Context("when the Rep request fails", func() {
 			BeforeEach(func() {
+				rep1Server.RouteToHandler("GET", "/state", func(resp http.ResponseWriter, req *http.Request) {
+					resp.WriteHeader(503)
+				})
 				rep2Server.RouteToHandler("GET", "/state", func(resp http.ResponseWriter, req *http.Request) {
 					resp.WriteHeader(503)
 				})
 			})
 
 			It("exits with status code of 4", func() {
-				sess := StartCFDOT("cell-state", "cell-2")
+				sess := StartCFDOT("cell-state", "cell-1")
 				Eventually(sess).Should(gexec.Exit(4))
 				Expect(sess.Err).To(gbytes.Say("Rep error"))
+				Expect(sess.Err).To(gbytes.Say("Failed to get cell state for cell cell-1"))
 			})
 
 			Context("cell-states", func() {
@@ -287,9 +291,6 @@ var _ = Describe("cell-state", func() {
 					sess := StartCFDOT("cell-states")
 					Eventually(sess).Should(gexec.Exit(4))
 					Expect(sess.Err).To(gbytes.Say("Rep error"))
-					//
-					// WARN (CEV): Fails here - Looks like rep1Server is not configured to fail!
-					//
 					Expect(sess.Err).To(gbytes.Say("Failed to get cell state for cell cell-1"))
 					Expect(sess.Err).To(gbytes.Say("Failed to get cell state for cell cell-2"))
 				})
