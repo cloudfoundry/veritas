@@ -38,7 +38,7 @@ var _ = Describe("cancel-task", func() {
 		})
 
 		It("exits 0", func() {
-			sess := StartCFDOT("cancel-task", "task-guid")
+			sess := RunCFDot("cancel-task", "task-guid")
 			Eventually(sess).Should(gexec.Exit(0))
 			Expect(len(bbsServer.ReceivedRequests())).To(Equal(1))
 		})
@@ -50,7 +50,7 @@ var _ = Describe("cancel-task", func() {
 				})
 
 				It("exits with code 4 and a timeout message", func() {
-					sess := StartCFDOT("cancel-task", "task-guid", "--timeout", "1")
+					sess := RunCFDot("cancel-task", "task-guid", "--timeout", "1")
 					Eventually(sess, 2).Should(gexec.Exit(4))
 					Expect(sess.Err).To(gbytes.Say(`Timeout exceeded`))
 				})
@@ -58,7 +58,7 @@ var _ = Describe("cancel-task", func() {
 
 			Context("when request is within the timeout", func() {
 				It("exits with status code of 0", func() {
-					sess := StartCFDOT("cancel-task", "task-guid", "--timeout", "1")
+					sess := RunCFDot("cancel-task", "task-guid", "--timeout", "1")
 					Eventually(sess).Should(gexec.Exit(0))
 					Expect(len(bbsServer.ReceivedRequests())).To(Equal(1))
 				})
@@ -76,7 +76,7 @@ var _ = Describe("cancel-task", func() {
 				}),
 			)
 
-			sess := StartCFDOT("cancel-task", "task-guid")
+			sess := RunCFDot("cancel-task", "task-guid")
 			Eventually(sess).Should(gexec.Exit(4))
 
 			Expect(sess.Err).To(gbytes.Say("UnknownError"))
@@ -85,14 +85,14 @@ var _ = Describe("cancel-task", func() {
 
 	Context("when passed invalid arguments", func() {
 		It("fails with no arugments and prints the usage", func() {
-			sess := StartCFDOT("cancel-task")
+			sess := RunCFDot("cancel-task")
 			Eventually(sess).Should(gexec.Exit(3))
 			Expect(sess.Err).To(gbytes.Say("Error: Missing arguments"))
 			Expect(sess.Err).To(gbytes.Say("cfdot cancel-task TASK_GUID \\[flags\\]"))
 		})
 
 		It("fails with 2+ arguments", func() {
-			sess := StartCFDOT("cancel-task", "arg1", "arg2")
+			sess := RunCFDot("cancel-task", "arg1", "arg2")
 			Eventually(sess).Should(gexec.Exit(3))
 			Expect(sess.Err).To(gbytes.Say("Error: Too many arguments specified"))
 			Expect(sess.Err).To(gbytes.Say("cfdot cancel-task TASK_GUID \\[flags\\]"))

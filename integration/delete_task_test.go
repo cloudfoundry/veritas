@@ -19,7 +19,7 @@ var _ = Describe("delete-task", func() {
 	Context("when a set of invalid arguments is passed", func() {
 		Context("when two arguments are passed", func() {
 			It("exits with status 3 and prints the usage and the error", func() {
-				sess := StartCFDOT("delete-task", "arg1", "arg2")
+				sess := RunCFDot("delete-task", "arg1", "arg2")
 				Eventually(sess).Should(gexec.Exit(3))
 				Expect(sess.Err).To(gbytes.Say(`Error:`))
 				Expect(sess.Err).To(gbytes.Say("cfdot delete-task TASK_GUID .*"))
@@ -28,7 +28,7 @@ var _ = Describe("delete-task", func() {
 
 		Context("when no arguments are passed", func() {
 			It("exits with status 3 and prints the usage and the error", func() {
-				sess := StartCFDOT("delete-task")
+				sess := RunCFDot("delete-task")
 				Eventually(sess).Should(gexec.Exit(3))
 				Expect(sess.Err).To(gbytes.Say(`Error:`))
 				Expect(sess.Err).To(gbytes.Say("cfdot delete-task TASK_GUID .*"))
@@ -69,7 +69,7 @@ var _ = Describe("delete-task", func() {
 		})
 
 		It("exits with status code of 0", func() {
-			sess := StartCFDOT("delete-task", taskGuid)
+			sess := RunCFDot("delete-task", taskGuid)
 			Eventually(sess).Should(gexec.Exit(0))
 		})
 
@@ -77,7 +77,7 @@ var _ = Describe("delete-task", func() {
 			var sess *gexec.Session
 
 			BeforeEach(func() {
-				sess = StartCFDOT("delete-task", "--timeout", "1", taskGuid)
+				sess = RunCFDot("delete-task", "--timeout", "1", taskGuid)
 			})
 
 			Context("when request exceeds timeout", func() {
@@ -124,7 +124,7 @@ var _ = Describe("delete-task", func() {
 		})
 
 		It("exits with status code 4 and prints the error", func() {
-			sess := StartCFDOT("delete-task", "any-task-guid")
+			sess := RunCFDot("delete-task", "any-task-guid")
 			Eventually(sess).Should(gexec.Exit(4))
 			Expect(sess.Err).To(gbytes.Say("deadlock"))
 		})

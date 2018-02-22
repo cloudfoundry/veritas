@@ -46,7 +46,7 @@ var _ = Describe("retire-actual-lrp", func() {
 		})
 
 		It("exits with exit code 0", func() {
-			session := StartCFDOT("retire-actual-lrp", "test-process-guid", "1")
+			session := RunCFDot("retire-actual-lrp", "test-process-guid", "1")
 			Eventually(session).Should(gexec.Exit(0))
 		})
 
@@ -57,7 +57,7 @@ var _ = Describe("retire-actual-lrp", func() {
 				})
 
 				It("exits with code 4 and a timeout message", func() {
-					session := StartCFDOT("retire-actual-lrp", "--timeout", "1", "test-process-guid", "1")
+					session := RunCFDot("retire-actual-lrp", "--timeout", "1", "test-process-guid", "1")
 					Eventually(session, 2).Should(gexec.Exit(4))
 					Expect(session.Err).To(gbytes.Say(`Timeout exceeded`))
 				})
@@ -65,7 +65,7 @@ var _ = Describe("retire-actual-lrp", func() {
 
 			Context("when request is within the timeout", func() {
 				It("exits with status code of 0", func() {
-					session := StartCFDOT("retire-actual-lrp", "--timeout", "1", "test-process-guid", "1")
+					session := RunCFDot("retire-actual-lrp", "--timeout", "1", "test-process-guid", "1")
 					Eventually(session).Should(gexec.Exit(0))
 				})
 			})
@@ -88,14 +88,14 @@ var _ = Describe("retire-actual-lrp", func() {
 		})
 
 		It("exits with exit code 4", func() {
-			session := StartCFDOT("retire-actual-lrp", "test-process-guid", "1")
+			session := RunCFDot("retire-actual-lrp", "test-process-guid", "1")
 			Eventually(session).Should(gexec.Exit(4))
 		})
 	})
 
 	Context("when invalid arguments are passed", func() {
 		It("exits with exit code 3", func() {
-			session := StartCFDOT("retire-actual-lrp", "test-process-guid", "a")
+			session := RunCFDot("retire-actual-lrp", "test-process-guid", "a")
 			Eventually(session).Should(gexec.Exit(3))
 		})
 	})

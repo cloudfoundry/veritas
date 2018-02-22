@@ -46,7 +46,7 @@ var _ = Describe("cell", func() {
 		})
 
 		It("returns the json encoding of the cell presences", func() {
-			sess := StartCFDOT("cell", "cell-1")
+			sess := RunCFDot("cell", "cell-1")
 			Eventually(sess).Should(gexec.Exit(0))
 
 			jsonData, err := json.Marshal(presence)
@@ -56,7 +56,7 @@ var _ = Describe("cell", func() {
 
 		Context("when the cell does not exist", func() {
 			It("exits with status code of 5", func() {
-				sess := StartCFDOT("cell", "cell-id-dsafasdklfjasdlkf")
+				sess := RunCFDot("cell", "cell-id-dsafasdklfjasdlkf")
 				Eventually(sess).Should(gexec.Exit(5))
 			})
 		})
@@ -65,7 +65,7 @@ var _ = Describe("cell", func() {
 			var sess *gexec.Session
 
 			BeforeEach(func() {
-				sess = StartCFDOT("--timeout", "1", "cell", "cell-1")
+				sess = RunCFDot("--timeout", "1", "cell", "cell-1")
 			})
 
 			Context("when request exceeds timeout", func() {
@@ -93,7 +93,7 @@ var _ = Describe("cell", func() {
 
 	Context("when cell command is called with extra arguments", func() {
 		It("exits with status code of 3", func() {
-			sess := StartCFDOT("cell", "cell-id", "extra-argument")
+			sess := RunCFDot("cell", "cell-id", "extra-argument")
 			Eventually(sess).Should(gexec.Exit(3))
 		})
 	})

@@ -20,7 +20,7 @@ var _ = Describe("desired-lrp", func() {
 	Context("when BBS flags are valid", func() {
 		Context("when no arguments are provided", func() {
 			It("fails with exit code 3 and prints the usage to stderr", func() {
-				sess := StartCFDOT("desired-lrp")
+				sess := RunCFDot("desired-lrp")
 				Eventually(sess).Should(gexec.Exit(3))
 				Expect(sess.Err).To(gbytes.Say("Missing arguments"))
 				Expect(sess.Err).To(gbytes.Say("cfdot desired-lrp PROCESS_GUID \\[flags\\]"))
@@ -29,7 +29,7 @@ var _ = Describe("desired-lrp", func() {
 
 		Context("when two arguments are provided", func() {
 			It("fails with exit code 3 and prints the usage to stderr", func() {
-				sess := StartCFDOT("desired-lrp", "arg1", "arg2")
+				sess := RunCFDot("desired-lrp", "arg1", "arg2")
 				Eventually(sess).Should(gexec.Exit(3))
 				Expect(sess.Err).To(gbytes.Say("Too many arguments specified"))
 				Expect(sess.Err).To(gbytes.Say("cfdot desired-lrp PROCESS_GUID \\[flags\\]"))
@@ -38,7 +38,7 @@ var _ = Describe("desired-lrp", func() {
 
 		Context("when an empty argument is provided", func() {
 			It("fails with exit code 3 and prints the usage to stderr", func() {
-				sess := StartCFDOT("desired-lrp", "")
+				sess := RunCFDot("desired-lrp", "")
 				Eventually(sess).Should(gexec.Exit(3))
 				Expect(sess.Err).To(gbytes.Say("Process guid should be non empty string"))
 				Expect(sess.Err).To(gbytes.Say("cfdot desired-lrp PROCESS_GUID \\[flags\\]"))
@@ -81,7 +81,7 @@ var _ = Describe("desired-lrp", func() {
 				})
 
 				It("exits with status 0 and returns the json encoding of the desired lrp scheduling info", func() {
-					sess := StartCFDOT("desired-lrp", "test-guid")
+					sess := RunCFDot("desired-lrp", "test-guid")
 					Eventually(sess).Should(gexec.Exit(0))
 					jsonData, err := json.Marshal(desiredLRP)
 					Expect(err).NotTo(HaveOccurred())
@@ -120,7 +120,7 @@ var _ = Describe("desired-lrp", func() {
 					})
 
 					It("exits with code 4 and a timeout message", func() {
-						sess := StartCFDOT("desired-lrp", "--timeout", "1", "test-guid")
+						sess := RunCFDot("desired-lrp", "--timeout", "1", "test-guid")
 						Eventually(sess, 2).Should(gexec.Exit(4))
 						Expect(sess.Err).To(gbytes.Say(`Timeout exceeded`))
 					})
@@ -128,7 +128,7 @@ var _ = Describe("desired-lrp", func() {
 
 				Context("when request is within the timeout", func() {
 					It("exits with status code of 0", func() {
-						sess := StartCFDOT("desired-lrp", "--timeout", "1", "test-guid")
+						sess := RunCFDot("desired-lrp", "--timeout", "1", "test-guid")
 						Eventually(sess).Should(gexec.Exit(0))
 						jsonData, err := json.Marshal(desiredLRP)
 						Expect(err).NotTo(HaveOccurred())
@@ -154,7 +154,7 @@ var _ = Describe("desired-lrp", func() {
 				})
 
 				It("exits with status 4 and prints the error", func() {
-					sess := StartCFDOT("desired-lrp", "test-guid")
+					sess := RunCFDot("desired-lrp", "test-guid")
 					Eventually(sess).Should(gexec.Exit(4))
 					Expect(sess.Err).To(gbytes.Say("deadlock"))
 				})

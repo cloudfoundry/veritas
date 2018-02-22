@@ -43,7 +43,7 @@ var _ = Describe("tasks", func() {
 		})
 
 		It("should return the tasks as a stream of json objects", func() {
-			sess := StartCFDOT("tasks")
+			sess := RunCFDot("tasks")
 			Eventually(sess).Should(gexec.Exit(0))
 
 			Expect(bbsServer.ReceivedRequests()).To(HaveLen(1))
@@ -61,7 +61,7 @@ var _ = Describe("tasks", func() {
 				})
 
 				It("exits with code 4 and a timeout message", func() {
-					sess := StartCFDOT("tasks", "--timeout", "1")
+					sess := RunCFDot("tasks", "--timeout", "1")
 					Eventually(sess, 2).Should(gexec.Exit(4))
 					Expect(sess.Err).To(gbytes.Say(`Timeout exceeded`))
 				})
@@ -69,7 +69,7 @@ var _ = Describe("tasks", func() {
 
 			Context("when request is within the timeout", func() {
 				It("exits with status code of 0", func() {
-					sess := StartCFDOT("tasks", "--timeout", "1")
+					sess := RunCFDot("tasks", "--timeout", "1")
 					Eventually(sess).Should(gexec.Exit(0))
 
 					Expect(bbsServer.ReceivedRequests()).To(HaveLen(1))
@@ -103,21 +103,21 @@ var _ = Describe("tasks", func() {
 
 			Context("with -d", func() {
 				It("should exit with status code 0", func() {
-					sess := StartCFDOT("tasks", "-d", "domain")
+					sess := RunCFDot("tasks", "-d", "domain")
 					Eventually(sess).Should(gexec.Exit(0))
 				})
 			})
 
 			Context("with --domain", func() {
 				It("should exit with status code 0", func() {
-					sess := StartCFDOT("tasks", "--domain", "domain")
+					sess := RunCFDot("tasks", "--domain", "domain")
 					Eventually(sess).Should(gexec.Exit(0))
 				})
 			})
 
 			Context("with both --domain and -d", func() {
 				It("should exit with a status code of 3", func() {
-					sess := StartCFDOT("tasks", "--domain", "domain", "-d", "domain")
+					sess := RunCFDot("tasks", "--domain", "domain", "-d", "domain")
 					Eventually(sess).Should(gexec.Exit(3))
 				})
 			})
@@ -142,21 +142,21 @@ var _ = Describe("tasks", func() {
 
 			Context("with -c", func() {
 				It("should exit with status code 0", func() {
-					sess := StartCFDOT("tasks", "-c", "cell-id")
+					sess := RunCFDot("tasks", "-c", "cell-id")
 					Eventually(sess).Should(gexec.Exit(0))
 				})
 			})
 
 			Context("with --cell-id", func() {
 				It("should exit with status code 0", func() {
-					sess := StartCFDOT("tasks", "--cell-id", "cell-id")
+					sess := RunCFDot("tasks", "--cell-id", "cell-id")
 					Eventually(sess).Should(gexec.Exit(0))
 				})
 			})
 
 			Context("with both --cell-id and -c", func() {
 				It("should exit with a status code of 3", func() {
-					sess := StartCFDOT("tasks", "--cell-id", "cell-id", "-c", "cell-id")
+					sess := RunCFDot("tasks", "--cell-id", "cell-id", "-c", "cell-id")
 					Eventually(sess).Should(gexec.Exit(3))
 				})
 			})
@@ -181,7 +181,7 @@ var _ = Describe("tasks", func() {
 			})
 
 			It("should exit with status code 0", func() {
-				sess := StartCFDOT("tasks", "-c", "cell-id", "-d", "domain")
+				sess := RunCFDot("tasks", "-c", "cell-id", "-d", "domain")
 				Eventually(sess).Should(gexec.Exit(0))
 			})
 		})
@@ -189,7 +189,7 @@ var _ = Describe("tasks", func() {
 
 	Context("when extra args are given", func() {
 		It("returns an error and exits with status 3", func() {
-			sess := StartCFDOT("tasks", "garbage")
+			sess := RunCFDot("tasks", "garbage")
 			Eventually(sess).Should(gexec.Exit(3))
 			Expect(sess.Err).To(gbytes.Say("Too many arguments specified"))
 		})
@@ -204,7 +204,7 @@ var _ = Describe("tasks", func() {
 				),
 			)
 
-			sess := StartCFDOT("tasks")
+			sess := RunCFDot("tasks")
 			Eventually(sess).Should(gexec.Exit(4))
 			Expect(sess.Err).To(gbytes.Say("the request failed for an unknown reason"))
 		})

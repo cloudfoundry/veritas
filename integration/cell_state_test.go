@@ -95,7 +95,7 @@ var _ = Describe("cell-state", func() {
 		})
 
 		It("returns the json encoding of the correct cell-state", func() {
-			sess := StartCFDOT("cell-state", "cell-2")
+			sess := RunCFDot("cell-state", "cell-2")
 			Eventually(sess).Should(gexec.Exit(0))
 
 			jsonData, err := json.Marshal(cellState2)
@@ -122,7 +122,7 @@ var _ = Describe("cell-state", func() {
 					),
 				)
 
-				sess = StartCFDOT("--timeout", "1", "cell-state", "cell-2")
+				sess = RunCFDot("--timeout", "1", "cell-state", "cell-2")
 			})
 
 			Context("when exceeds timeout", func() {
@@ -153,7 +153,7 @@ var _ = Describe("cell-state", func() {
 
 		Context("when the rep has mutual TLS enabled", func() {
 			It("uses the correct TLS config", func() {
-				sess := StartCFDOT("cell-state", "cell-1")
+				sess := RunCFDot("cell-state", "cell-1")
 				Eventually(sess).Should(gexec.Exit(0))
 
 				jsonData, err := json.Marshal(cellState1)
@@ -163,7 +163,7 @@ var _ = Describe("cell-state", func() {
 
 			Context("cell-states", func() {
 				It("returns the json encoding of the cell-states", func() {
-					sess := StartCFDOT("cell-states")
+					sess := RunCFDot("cell-states")
 					Eventually(sess).Should(gexec.Exit(0))
 
 					decoder := json.NewDecoder(ioutil.NopCloser(bytes.NewBuffer(sess.Out.Contents())))
@@ -198,7 +198,7 @@ var _ = Describe("cell-state", func() {
 						),
 					)
 
-					sess = StartCFDOT("--timeout", "1", "cell-states")
+					sess = RunCFDot("--timeout", "1", "cell-states")
 				})
 
 				Context("when exceeds timeout", func() {
@@ -236,7 +236,7 @@ var _ = Describe("cell-state", func() {
 
 		Context("when the cell does not exist", func() {
 			It("exits with status code of 5", func() {
-				sess := StartCFDOT("cell-state", "cell-id-dsafasdklfjasdlkf")
+				sess := RunCFDot("cell-state", "cell-id-dsafasdklfjasdlkf")
 				Eventually(sess).Should(gexec.Exit(5))
 			})
 		})
@@ -254,14 +254,14 @@ var _ = Describe("cell-state", func() {
 			})
 
 			It("exits with status code of 4", func() {
-				sess := StartCFDOT("cell-state", "cell-2")
+				sess := RunCFDot("cell-state", "cell-2")
 				Eventually(sess).Should(gexec.Exit(4))
 				Expect(sess.Err).To(gbytes.Say("BBS error"))
 			})
 
 			Context("cell-states", func() {
 				It("exits with status code of 4", func() {
-					sess := StartCFDOT("cell-states")
+					sess := RunCFDot("cell-states")
 					Eventually(sess).Should(gexec.Exit(4))
 					Expect(sess.Err).To(gbytes.Say("BBS error"))
 					Expect(sess.Err).To(gbytes.Say("Failed to get cell registrations from BBS"))
@@ -280,7 +280,7 @@ var _ = Describe("cell-state", func() {
 			})
 
 			It("exits with status code of 4", func() {
-				sess := StartCFDOT("cell-state", "cell-1")
+				sess := RunCFDot("cell-state", "cell-1")
 				Eventually(sess).Should(gexec.Exit(4))
 				Expect(sess.Err).To(gbytes.Say("Rep error"))
 				Expect(sess.Err).To(gbytes.Say("Failed to get cell state for cell cell-1"))
@@ -288,7 +288,7 @@ var _ = Describe("cell-state", func() {
 
 			Context("cell-states", func() {
 				It("exits with status code of 4", func() {
-					sess := StartCFDOT("cell-states")
+					sess := RunCFDot("cell-states")
 					Eventually(sess).Should(gexec.Exit(4))
 					Expect(sess.Err).To(gbytes.Say("Rep error"))
 					Expect(sess.Err).To(gbytes.Say("Failed to get cell state for cell cell-1"))
@@ -299,13 +299,13 @@ var _ = Describe("cell-state", func() {
 
 		Context("when cell command is called with extra arguments", func() {
 			It("exits with status code of 3", func() {
-				sess := StartCFDOT("cell-state", "cell-id", "extra-argument")
+				sess := RunCFDot("cell-state", "cell-id", "extra-argument")
 				Eventually(sess).Should(gexec.Exit(3))
 			})
 
 			Context("cell-states", func() {
 				It("exits with status code of 3", func() {
-					sess := StartCFDOT("cell-states", "extra-argument")
+					sess := RunCFDot("cell-states", "extra-argument")
 					Eventually(sess).Should(gexec.Exit(3))
 				})
 			})

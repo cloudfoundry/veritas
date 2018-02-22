@@ -43,7 +43,7 @@ var _ = Describe("task", func() {
 		})
 
 		It("task prints a json representation of the task", func() {
-			sess := StartCFDOT("task", "task-guid")
+			sess := RunCFDot("task", "task-guid")
 			Eventually(sess).Should(gexec.Exit(0))
 
 			taskJSON, err := json.Marshal(task)
@@ -58,7 +58,7 @@ var _ = Describe("task", func() {
 				})
 
 				It("exits with code 4 and a timeout message", func() {
-					sess := StartCFDOT("task", "task-guid", "--timeout", "1")
+					sess := RunCFDot("task", "task-guid", "--timeout", "1")
 					Eventually(sess, 2).Should(gexec.Exit(4))
 					Expect(sess.Err).To(gbytes.Say(`Timeout exceeded`))
 				})
@@ -66,7 +66,7 @@ var _ = Describe("task", func() {
 
 			Context("when request is within the timeout", func() {
 				It("exits with status code of 0", func() {
-					sess := StartCFDOT("task", "task-guid", "--timeout", "1")
+					sess := RunCFDot("task", "task-guid", "--timeout", "1")
 					Eventually(sess).Should(gexec.Exit(0))
 				})
 			})
@@ -83,7 +83,7 @@ var _ = Describe("task", func() {
 				}),
 			)
 
-			sess := StartCFDOT("task", "task-guid")
+			sess := RunCFDot("task", "task-guid")
 			Eventually(sess).Should(gexec.Exit(4))
 
 			Expect(sess.Err).To(gbytes.Say("UnknownError"))
@@ -92,14 +92,14 @@ var _ = Describe("task", func() {
 
 	Context("validates that exactly one guid is passed in", func() {
 		It("fails with no arguments and prints the usage", func() {
-			sess := StartCFDOT("task")
+			sess := RunCFDot("task")
 			Eventually(sess).Should(gexec.Exit(3))
 			Expect(sess.Err).To(gbytes.Say("Error: Missing arguments"))
 			Expect(sess.Err).To(gbytes.Say("cfdot task TASK_GUID \\[flags\\]"))
 		})
 
 		It("fails with 2+ arguments", func() {
-			sess := StartCFDOT("task", "task-guid", "arg1", "arg2")
+			sess := RunCFDot("task", "task-guid", "arg1", "arg2")
 			Eventually(sess).Should(gexec.Exit(3))
 			Expect(sess.Err).To(gbytes.Say("Error: Too many arguments specified"))
 			Expect(sess.Err).To(gbytes.Say("cfdot task TASK_GUID \\[flags\\]"))

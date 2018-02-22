@@ -31,7 +31,7 @@ var _ = Describe("task-events", func() {
 		})
 
 		It("prints out the event stream", func() {
-			sess := StartCFDOT("task-events")
+			sess := RunCFDot("task-events")
 			Eventually(sess).Should(gexec.Exit(0))
 			Expect(sess.Out).To(gbytes.Say("some-guid"))
 		})
@@ -48,7 +48,7 @@ var _ = Describe("task-events", func() {
 		})
 
 		It("responds with a status code 4", func() {
-			sess := StartCFDOT("task-events")
+			sess := RunCFDot("task-events")
 			Eventually(sess).Should(gexec.Exit(4))
 		})
 	})

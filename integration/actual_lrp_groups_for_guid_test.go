@@ -48,7 +48,7 @@ var _ = Describe("actual-lrp-groups-for-guid", func() {
 			})
 
 			It("returns the json encoding of the actual lrp", func() {
-				sess := StartCFDOT("actual-lrp-groups-for-guid", "random-guid")
+				sess := RunCFDot("actual-lrp-groups-for-guid", "random-guid")
 				Eventually(sess).Should(gexec.Exit(0))
 				Expect(sess.Out).To(gbytes.Say(`"state":"running"`))
 			})
@@ -60,7 +60,7 @@ var _ = Describe("actual-lrp-groups-for-guid", func() {
 					})
 
 					It("exits with code 4 and a timeout message", func() {
-						sess := StartCFDOT("actual-lrp-groups-for-guid", "random-guid", "--timeout", "1")
+						sess := RunCFDot("actual-lrp-groups-for-guid", "random-guid", "--timeout", "1")
 						Eventually(sess, 2).Should(gexec.Exit(4))
 						Expect(sess.Err).To(gbytes.Say(`Timeout exceeded`))
 					})
@@ -68,7 +68,7 @@ var _ = Describe("actual-lrp-groups-for-guid", func() {
 
 				Context("when request is within the timeout", func() {
 					It("exits with status code of 0", func() {
-						sess := StartCFDOT("actual-lrp-groups-for-guid", "random-guid", "--timeout", "1")
+						sess := RunCFDot("actual-lrp-groups-for-guid", "random-guid", "--timeout", "1")
 						Eventually(sess).Should(gexec.Exit(0))
 						Expect(sess.Out).To(gbytes.Say(`"state":"running"`))
 					})
@@ -93,7 +93,7 @@ var _ = Describe("actual-lrp-groups-for-guid", func() {
 			})
 
 			It("exits with status code 4 and should print the type and message of the error", func() {
-				sess := StartCFDOT("actual-lrp-groups-for-guid", "random-guid")
+				sess := RunCFDot("actual-lrp-groups-for-guid", "random-guid")
 				Eventually(sess).Should(gexec.Exit(4))
 				Expect(sess.Err).To(gbytes.Say("BBS error"))
 				Expect(sess.Err).To(gbytes.Say("Type 28: Deadlock"))
@@ -101,7 +101,7 @@ var _ = Describe("actual-lrp-groups-for-guid", func() {
 			})
 
 			It("should not print the usage", func() {
-				sess := StartCFDOT("actual-lrp-groups-for-guid", "random-guid")
+				sess := RunCFDot("actual-lrp-groups-for-guid", "random-guid")
 				Expect(sess.Err).NotTo(gbytes.Say("Usage:"))
 			})
 		})
@@ -133,7 +133,7 @@ var _ = Describe("actual-lrp-groups-for-guid", func() {
 		})
 
 		It("returns the json encoding of the actual lrp", func() {
-			sess := StartCFDOT("actual-lrp-groups-for-guid", "test-process-guid", "-i", "1")
+			sess := RunCFDot("actual-lrp-groups-for-guid", "test-process-guid", "-i", "1")
 			Eventually(sess).Should(gexec.Exit(0))
 			Expect(sess.Out).To(gbytes.Say(`"state":"running"`))
 		})

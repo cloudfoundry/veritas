@@ -42,7 +42,7 @@ var _ = Describe("domains", func() {
 		})
 
 		It("domains prints a json stream of all the domains", func() {
-			sess := StartCFDOT("domains")
+			sess := RunCFDot("domains")
 			Eventually(sess).Should(gexec.Exit(0))
 			Expect(sess.Out).To(gbytes.Say(`"domain-1"\n"domain-2"\n`))
 		})
@@ -54,7 +54,7 @@ var _ = Describe("domains", func() {
 				})
 
 				It("exits with code 4 and a timeout message", func() {
-					sess := StartCFDOT("domains", "--timeout", "1")
+					sess := RunCFDot("domains", "--timeout", "1")
 					Eventually(sess, 2).Should(gexec.Exit(4))
 					Expect(sess.Err).To(gbytes.Say(`Timeout exceeded`))
 				})
@@ -62,7 +62,7 @@ var _ = Describe("domains", func() {
 
 			Context("when request is within the timeout", func() {
 				It("exits with status code of 0", func() {
-					sess := StartCFDOT("domains", "--timeout", "1")
+					sess := RunCFDot("domains", "--timeout", "1")
 					Eventually(sess).Should(gexec.Exit(0))
 					Expect(sess.Out).To(gbytes.Say(`"domain-1"\n"domain-2"\n`))
 				})
@@ -77,7 +77,7 @@ var _ = Describe("domains", func() {
 		})
 
 		It("domains fails with a relevant error message", func() {
-			sess := StartCFDOT("domains")
+			sess := RunCFDot("domains")
 			Eventually(sess, 2*time.Second).Should(gexec.Exit(4))
 			Expect(sess.Err).To(gbytes.Say("Invalid Response with status code: 500"))
 		})
@@ -100,7 +100,7 @@ var _ = Describe("domains", func() {
 		})
 
 		It("exits with status code 4 and should print the type and message of the error", func() {
-			sess := StartCFDOT("domains")
+			sess := RunCFDot("domains")
 			Eventually(sess).Should(gexec.Exit(4))
 			Expect(sess.Err).To(gbytes.Say("BBS error"))
 			Expect(sess.Err).To(gbytes.Say("Type 28: Deadlock"))
@@ -108,7 +108,7 @@ var _ = Describe("domains", func() {
 		})
 
 		It("should not print the usage", func() {
-			sess := StartCFDOT("domains")
+			sess := RunCFDot("domains")
 			Expect(sess.Err).NotTo(gbytes.Say("Usage:"))
 		})
 	})
@@ -125,12 +125,12 @@ var _ = Describe("domains", func() {
 			})
 
 			It("works with a --bbsURL flag specified before domains", func() {
-				sess := StartCFDOT("domains")
+				sess := RunCFDot("domains")
 				Eventually(sess).Should(gexec.Exit(0))
 			})
 
 			It("works with a --bbsURL flag specified after domains", func() {
-				sess := StartCFDOT("domains")
+				sess := RunCFDot("domains")
 				Eventually(sess).Should(gexec.Exit(0))
 			})
 		})

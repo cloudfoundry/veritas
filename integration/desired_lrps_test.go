@@ -45,7 +45,7 @@ var _ = Describe("desired-lrps", func() {
 		})
 
 		It("returns the json encoding of the desired lrp scheduling info", func() {
-			sess := StartCFDOT("desired-lrps")
+			sess := RunCFDot("desired-lrps")
 			Eventually(sess).Should(gexec.Exit(0))
 			Expect(sess.Out).To(gbytes.Say(`"instances":1`))
 		})
@@ -57,7 +57,7 @@ var _ = Describe("desired-lrps", func() {
 				})
 
 				It("exits with code 4 and a timeout message", func() {
-					sess := StartCFDOT("desired-lrps", "--timeout", "1")
+					sess := RunCFDot("desired-lrps", "--timeout", "1")
 					Eventually(sess, 2).Should(gexec.Exit(4))
 					Expect(sess.Err).To(gbytes.Say(`Timeout exceeded`))
 				})
@@ -65,7 +65,7 @@ var _ = Describe("desired-lrps", func() {
 
 			Context("when request is within the timeout", func() {
 				It("exits with status code of 0", func() {
-					sess := StartCFDOT("desired-lrps", "--timeout", "1")
+					sess := RunCFDot("desired-lrps", "--timeout", "1")
 					Eventually(sess).Should(gexec.Exit(0))
 					Expect(sess.Out).To(gbytes.Say(`"instances":1`))
 				})
@@ -94,21 +94,21 @@ var _ = Describe("desired-lrps", func() {
 
 		Context("when -d is used as a filter flag", func() {
 			It("exits with a status code of 0", func() {
-				sess := StartCFDOT("desired-lrps", "-d", "cf-apps")
+				sess := RunCFDot("desired-lrps", "-d", "cf-apps")
 				Eventually(sess).Should(gexec.Exit(0))
 			})
 		})
 
 		Context("when --domain is used as a filter flag", func() {
 			It("exits with a status code of 0", func() {
-				sess := StartCFDOT("desired-lrps", "--domain", "cf-apps")
+				sess := RunCFDot("desired-lrps", "--domain", "cf-apps")
 				Eventually(sess).Should(gexec.Exit(0))
 			})
 		})
 
 		Context("when --domain and -d are supplied as filter flags", func() {
 			It("exits with a status code of 3", func() {
-				sess := StartCFDOT("desired-lrps", "--domain", "cf-apps", "-d", "cf-apps")
+				sess := RunCFDot("desired-lrps", "--domain", "cf-apps", "-d", "cf-apps")
 				Eventually(sess).Should(gexec.Exit(3))
 			})
 		})

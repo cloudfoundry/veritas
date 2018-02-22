@@ -28,7 +28,7 @@ var _ = Describe("lrp-events", func() {
 						ghttp.VerifyBody(expectedBody),
 					),
 				)
-				sess := StartCFDOT("lrp-events", "-c", "some-cell-id")
+				sess := RunCFDot("lrp-events", "-c", "some-cell-id")
 				Eventually(sess).Should(gexec.Exit(0))
 			})
 
@@ -48,7 +48,7 @@ var _ = Describe("lrp-events", func() {
 						ghttp.VerifyBody(expectedBody),
 					),
 				)
-				sess := StartCFDOT("lrp-events")
+				sess := RunCFDot("lrp-events")
 				Eventually(sess).Should(gexec.Exit(0))
 			})
 
@@ -75,7 +75,7 @@ var _ = Describe("lrp-events", func() {
 		})
 
 		It("prints out the event stream", func() {
-			sess := StartCFDOT("lrp-events")
+			sess := RunCFDot("lrp-events")
 			Eventually(sess).Should(gexec.Exit(0))
 			Expect(sess.Out).To(gbytes.Say("some-guid"))
 		})
@@ -92,7 +92,7 @@ var _ = Describe("lrp-events", func() {
 		})
 
 		It("responds with a status code 4", func() {
-			sess := StartCFDOT("lrp-events")
+			sess := RunCFDot("lrp-events")
 			Eventually(sess).Should(gexec.Exit(4))
 		})
 	})

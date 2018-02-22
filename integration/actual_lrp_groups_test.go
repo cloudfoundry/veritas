@@ -47,7 +47,7 @@ var _ = Describe("actual-lrp-groups", func() {
 		})
 
 		It("returns the json encoding of the actual lrp", func() {
-			sess := StartCFDOT("actual-lrp-groups")
+			sess := RunCFDot("actual-lrp-groups")
 			Eventually(sess).Should(gexec.Exit(0))
 			Expect(sess.Out).To(gbytes.Say(`"state":"running"`))
 		})
@@ -59,7 +59,7 @@ var _ = Describe("actual-lrp-groups", func() {
 				})
 
 				It("exits with code 4 and a timeout message", func() {
-					sess := StartCFDOT("actual-lrp-groups", "--timeout", "1")
+					sess := RunCFDot("actual-lrp-groups", "--timeout", "1")
 					Eventually(sess, 2).Should(gexec.Exit(4))
 					Expect(sess.Err).To(gbytes.Say(`Timeout exceeded`))
 				})
@@ -67,7 +67,7 @@ var _ = Describe("actual-lrp-groups", func() {
 
 			Context("when request is within the timeout", func() {
 				It("exits with status code of 0", func() {
-					sess := StartCFDOT("actual-lrp-groups", "--timeout", "1")
+					sess := RunCFDot("actual-lrp-groups", "--timeout", "1")
 					Eventually(sess).Should(gexec.Exit(0))
 					Expect(sess.Out).To(gbytes.Say(`"state":"running"`))
 				})
@@ -98,7 +98,7 @@ var _ = Describe("actual-lrp-groups", func() {
 		})
 
 		It("exits with status code of 0", func() {
-			sess := StartCFDOT("actual-lrp-groups",
+			sess := RunCFDot("actual-lrp-groups",
 				"-d", "cf-apps",
 				"-c", "cell_z1-0",
 			)
@@ -106,7 +106,7 @@ var _ = Describe("actual-lrp-groups", func() {
 		})
 
 		It("exits with status code of 0", func() {
-			sess := StartCFDOT("actual-lrp-groups",
+			sess := RunCFDot("actual-lrp-groups",
 				"-d", "cf-apps",
 				"--domain", "cf-apps",
 				"--cell-id", "cell_z1-0",

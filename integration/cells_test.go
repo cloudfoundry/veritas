@@ -56,7 +56,7 @@ var _ = Describe("cells", func() {
 		})
 
 		It("returns the json encoding of the cell presences", func() {
-			sess := StartCFDOT("cells")
+			sess := RunCFDot("cells")
 			Eventually(sess).Should(gexec.Exit(0))
 			Expect(sess.Out).To(gbytes.Say(`"rep_url":"http://rep1.com"`))
 		})
@@ -65,7 +65,7 @@ var _ = Describe("cells", func() {
 			var sess *gexec.Session
 
 			BeforeEach(func() {
-				sess = StartCFDOT("--timeout", "1", "cells")
+				sess = RunCFDot("--timeout", "1", "cells")
 			})
 
 			Context("when request exceeds timeout", func() {
@@ -90,7 +90,7 @@ var _ = Describe("cells", func() {
 
 	Context("when cells command is called with extra arguments", func() {
 		It("exits with status code of 3", func() {
-			sess := StartCFDOT("cells", "extra-args")
+			sess := RunCFDot("cells", "extra-args")
 			Eventually(sess).Should(gexec.Exit(3))
 		})
 	})

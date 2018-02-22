@@ -219,7 +219,7 @@ func itHasNoArgs(command string, locketFlags bool) {
 	})
 }
 
-func StartCFDOT(args ...string) *gexec.Session {
+func RunCFDot(args ...string) *gexec.Session {
 	cmdArgs := []string{
 		"--bbsURL", bbsServer.URL(),
 		"--caCertFile", locketCACertFile,

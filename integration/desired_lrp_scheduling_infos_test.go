@@ -19,7 +19,7 @@ var _ = Describe("desired-lrp-scheduling-infos", func() {
 
 	Context("when extra arguments are passed", func() {
 		It("exits with status code of 3 and prints the usage", func() {
-			sess := StartCFDOT("desired-lrp-scheduling-infos", "extra-arg")
+			sess := RunCFDot("desired-lrp-scheduling-infos", "extra-arg")
 			Eventually(sess).Should(gexec.Exit(3))
 			Expect(sess.Err).To(gbytes.Say("cfdot desired-lrp-scheduling-infos \\[flags\\]"))
 		})
@@ -53,7 +53,7 @@ var _ = Describe("desired-lrp-scheduling-infos", func() {
 		})
 
 		It("exits with 0  and returns the json encoding of the desired lrp scheduling info", func() {
-			sess := StartCFDOT("desired-lrp-scheduling-infos")
+			sess := RunCFDot("desired-lrp-scheduling-infos")
 			Eventually(sess).Should(gexec.Exit(0))
 			Expect(sess.Out).To(gbytes.Say(`"instances":1`))
 		})
@@ -62,7 +62,7 @@ var _ = Describe("desired-lrp-scheduling-infos", func() {
 			var sess *gexec.Session
 
 			BeforeEach(func() {
-				sess = StartCFDOT("desired-lrp-scheduling-infos", "--timeout", "1")
+				sess = RunCFDot("desired-lrp-scheduling-infos", "--timeout", "1")
 			})
 
 			Context("when request exceeds timeout", func() {
@@ -105,12 +105,12 @@ var _ = Describe("desired-lrp-scheduling-infos", func() {
 		})
 
 		It("exits with status code of 0", func() {
-			sess := StartCFDOT("desired-lrp-scheduling-infos", "-d", "cf-apps")
+			sess := RunCFDot("desired-lrp-scheduling-infos", "-d", "cf-apps")
 			Eventually(sess).Should(gexec.Exit(0))
 		})
 
 		It("exits with status code of 0", func() {
-			sess := StartCFDOT("desired-lrp-scheduling-infos", "--domain", "cf-apps")
+			sess := RunCFDot("desired-lrp-scheduling-infos", "--domain", "cf-apps")
 			Eventually(sess).Should(gexec.Exit(0))
 		})
 	})

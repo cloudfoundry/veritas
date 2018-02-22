@@ -22,7 +22,7 @@ var _ = Describe("create-task", func() {
 
 	Context("when no spec is passed", func() {
 		It("exits with status code of 3 and prints the error and usage", func() {
-			sess := StartCFDOT("create-task")
+			sess := RunCFDot("create-task")
 			Eventually(sess).Should(gexec.Exit(3))
 			Expect(sess.Err).To(gbytes.Say(`missing spec`))
 			Expect(sess.Err).To(gbytes.Say("cfdot create-task \\(SPEC\\|@FILE\\) .*"))
@@ -71,7 +71,7 @@ var _ = Describe("create-task", func() {
 			})
 
 			It("exits with status code of 0", func() {
-				sess := StartCFDOT("create-task", taskArg)
+				sess := RunCFDot("create-task", taskArg)
 				Eventually(sess).Should(gexec.Exit(0))
 			})
 
@@ -79,7 +79,7 @@ var _ = Describe("create-task", func() {
 				var sess *gexec.Session
 
 				BeforeEach(func() {
-					sess = StartCFDOT("create-task", "--timeout", "1", taskArg)
+					sess = RunCFDot("create-task", "--timeout", "1", taskArg)
 				})
 
 				Context("when request exceeds timeout", func() {
@@ -114,21 +114,21 @@ var _ = Describe("create-task", func() {
 			})
 
 			It("exits with status code 0", func() {
-				sess := StartCFDOT("create-task", taskArg)
+				sess := RunCFDot("create-task", taskArg)
 				Eventually(sess).Should(gexec.Exit(0))
 			})
 		})
 
 		Context("empty spec", func() {
 			It("exits with status code of 3", func() {
-				sess := StartCFDOT("create-task")
+				sess := RunCFDot("create-task")
 				Eventually(sess).Should(gexec.Exit(3))
 			})
 		})
 
 		Context("invalid spec", func() {
 			It("exits with status code of 3 and prints the error", func() {
-				sess := StartCFDOT("create-task", "foo")
+				sess := RunCFDot("create-task", "foo")
 				Eventually(sess).Should(gexec.Exit(3))
 				Expect(sess.Err).To(gbytes.Say("Invalid JSON:"))
 			})
@@ -136,7 +136,7 @@ var _ = Describe("create-task", func() {
 
 		Context("non-existing spec file", func() {
 			It("exits with status 3 and prints the error", func() {
-				sess := StartCFDOT("create-task", "@/path/to/non/existing/file")
+				sess := RunCFDot("create-task", "@/path/to/non/existing/file")
 				Eventually(sess).Should(gexec.Exit(3))
 				Expect(sess.Err).To(gbytes.Say("no such file"))
 			})
@@ -159,7 +159,7 @@ var _ = Describe("create-task", func() {
 		})
 
 		It("exits with status code 4 and prints the error", func() {
-			sess := StartCFDOT("create-task", "{}")
+			sess := RunCFDot("create-task", "{}")
 			Eventually(sess).Should(gexec.Exit(4))
 			Expect(sess.Err).To(gbytes.Say("deadlock"))
 		})

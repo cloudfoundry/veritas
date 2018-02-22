@@ -21,7 +21,7 @@ var _ = Describe("update-desired-lrp", func() {
 
 	Context("when not enough args are provided", func() {
 		It("exits with status 3 and prints an error on stderr", func() {
-			sess := StartCFDOT("update-desired-lrp")
+			sess := RunCFDot("update-desired-lrp")
 			Eventually(sess).Should(gexec.Exit(3))
 			Expect(sess.Err).To(gbytes.Say(`Missing arguments`))
 			Expect(sess.Err).To(gbytes.Say("cfdot update-desired-lrp process-guid \\(SPEC\\|@FILE\\) .*"))
@@ -70,7 +70,7 @@ var _ = Describe("update-desired-lrp", func() {
 			})
 
 			It("exits with status code of 0", func() {
-				sess := StartCFDOT("update-desired-lrp", "process-guid", lrpArg)
+				sess := RunCFDot("update-desired-lrp", "process-guid", lrpArg)
 				Eventually(sess).Should(gexec.Exit(0))
 			})
 
@@ -81,7 +81,7 @@ var _ = Describe("update-desired-lrp", func() {
 					})
 
 					It("exits with code 4 and a timeout message", func() {
-						sess := StartCFDOT("update-desired-lrp", "process-guid", lrpArg, "--timeout", "1")
+						sess := RunCFDot("update-desired-lrp", "process-guid", lrpArg, "--timeout", "1")
 						Eventually(sess, 2).Should(gexec.Exit(4))
 						Expect(sess.Err).To(gbytes.Say(`Timeout exceeded`))
 					})
@@ -89,7 +89,7 @@ var _ = Describe("update-desired-lrp", func() {
 
 				Context("when request is within the timeout", func() {
 					It("exits with status code of 0", func() {
-						sess := StartCFDOT("update-desired-lrp", "process-guid", lrpArg, "--timeout", "1")
+						sess := RunCFDot("update-desired-lrp", "process-guid", lrpArg, "--timeout", "1")
 						Eventually(sess).Should(gexec.Exit(0))
 					})
 				})
@@ -109,21 +109,21 @@ var _ = Describe("update-desired-lrp", func() {
 			})
 
 			It("exits with status code 0", func() {
-				sess := StartCFDOT("update-desired-lrp", "process-guid", lrpArg)
+				sess := RunCFDot("update-desired-lrp", "process-guid", lrpArg)
 				Eventually(sess).Should(gexec.Exit(0))
 			})
 		})
 
 		Context("empty spec", func() {
 			It("exits with status code of 3", func() {
-				sess := StartCFDOT("update-desired-lrp", "process-guid")
+				sess := RunCFDot("update-desired-lrp", "process-guid")
 				Eventually(sess).Should(gexec.Exit(3))
 			})
 		})
 
 		Context("invalid spec", func() {
 			It("exits with status code of 3 and prints the error", func() {
-				sess := StartCFDOT("update-desired-lrp", "process-guid", "foo")
+				sess := RunCFDot("update-desired-lrp", "process-guid", "foo")
 				Eventually(sess).Should(gexec.Exit(3))
 				Expect(sess.Err).To(gbytes.Say("Invalid JSON:"))
 			})
@@ -131,7 +131,7 @@ var _ = Describe("update-desired-lrp", func() {
 
 		Context("non-existing spec file", func() {
 			It("exits with status 3 and prints the error", func() {
-				sess := StartCFDOT("update-desired-lrp", "process-guid1", "@/path/to/non/existing/file")
+				sess := RunCFDot("update-desired-lrp", "process-guid1", "@/path/to/non/existing/file")
 				Eventually(sess).Should(gexec.Exit(3))
 				Expect(sess.Err).To(gbytes.Say("no such file"))
 			})
@@ -154,7 +154,7 @@ var _ = Describe("update-desired-lrp", func() {
 		})
 
 		It("exits with status 4 and prints the error", func() {
-			sess := StartCFDOT("update-desired-lrp", "process-guid1", "{}")
+			sess := RunCFDot("update-desired-lrp", "process-guid1", "{}")
 			Eventually(sess).Should(gexec.Exit(4))
 			Expect(sess.Err).To(gbytes.Say("Deadlock"))
 		})

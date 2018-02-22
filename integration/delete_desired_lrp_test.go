@@ -19,7 +19,7 @@ var _ = Describe("delete-desired-lrp", func() {
 	Context("when a set of invalid arguments is passed", func() {
 		Context("when two arguments are passed", func() {
 			It("exits with status 3 and prints the usage and the error", func() {
-				sess := StartCFDOT("delete-desired-lrp", "arg1", "arg2")
+				sess := RunCFDot("delete-desired-lrp", "arg1", "arg2")
 				Eventually(sess).Should(gexec.Exit(3))
 				Expect(sess.Err).To(gbytes.Say(`Error:`))
 				Expect(sess.Err).To(gbytes.Say("cfdot delete-desired-lrp PROCESS_GUID .*"))
@@ -28,7 +28,7 @@ var _ = Describe("delete-desired-lrp", func() {
 
 		Context("when no arguments are passed", func() {
 			It("exits with status 3 and prints the usage and the error", func() {
-				sess := StartCFDOT("delete-desired-lrp")
+				sess := RunCFDot("delete-desired-lrp")
 				Eventually(sess).Should(gexec.Exit(3))
 				Expect(sess.Err).To(gbytes.Say(`Error:`))
 				Expect(sess.Err).To(gbytes.Say("cfdot delete-desired-lrp PROCESS_GUID .*"))
@@ -62,7 +62,7 @@ var _ = Describe("delete-desired-lrp", func() {
 		})
 
 		It("exits with status code of 0", func() {
-			sess := StartCFDOT("delete-desired-lrp", processGuid)
+			sess := RunCFDot("delete-desired-lrp", processGuid)
 			Eventually(sess).Should(gexec.Exit(0))
 		})
 
@@ -70,7 +70,7 @@ var _ = Describe("delete-desired-lrp", func() {
 			var sess *gexec.Session
 
 			BeforeEach(func() {
-				sess = StartCFDOT("delete-desired-lrp", "--timeout", "1", processGuid)
+				sess = RunCFDot("delete-desired-lrp", "--timeout", "1", processGuid)
 			})
 
 			Context("when request exceeds timeout", func() {
@@ -108,7 +108,7 @@ var _ = Describe("delete-desired-lrp", func() {
 		})
 
 		It("exits with status code 4 and prints the error", func() {
-			sess := StartCFDOT("delete-desired-lrp", "any-process-guid")
+			sess := RunCFDot("delete-desired-lrp", "any-process-guid")
 			Eventually(sess).Should(gexec.Exit(4))
 			Expect(sess.Err).To(gbytes.Say("deadlock"))
 		})

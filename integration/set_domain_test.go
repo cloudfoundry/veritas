@@ -39,24 +39,24 @@ var _ = Describe("set-domain", func() {
 		})
 
 		It("set-domain works with a TTL not specified", func() {
-			sess := StartCFDOT("set-domain", "any-domain")
+			sess := RunCFDot("set-domain", "any-domain")
 			Eventually(sess).Should(gexec.Exit(0))
 		})
 
 		It("set-domain works with a TTL specified", func() {
-			sess := StartCFDOT("set-domain", "any-domain", "--ttl", "40s")
+			sess := RunCFDot("set-domain", "any-domain", "--ttl", "40s")
 			Eventually(sess).Should(gexec.Exit(0))
 		})
 
 		It("set-domain prints to stderr when no domain specified", func() {
-			sess := StartCFDOT("set-domain", "", "--ttl", "40s")
+			sess := RunCFDot("set-domain", "", "--ttl", "40s")
 			Eventually(sess).Should(gexec.Exit(3))
 			Expect(sess.Err).To(gbytes.Say(`No domain given`))
 			Expect(sess.Err).To(gbytes.Say(`Usage`))
 		})
 
 		It("set-domain prints to stderr for negative TTL", func() {
-			sess := StartCFDOT("set-domain", "any-domain", "--ttl", "-40s")
+			sess := RunCFDot("set-domain", "any-domain", "--ttl", "-40s")
 			Eventually(sess).Should(gexec.Exit(3))
 			Expect(sess.Err).To(gbytes.Say(`ttl is negative`))
 			Expect(sess.Err).To(gbytes.Say(`Usage:`))
@@ -80,7 +80,7 @@ var _ = Describe("set-domain", func() {
 				})
 
 				It("exits with code 4 and a timeout message", func() {
-					sess := StartCFDOT("--timeout", "1", "set-domain", "any-domain")
+					sess := RunCFDot("--timeout", "1", "set-domain", "any-domain")
 					Eventually(sess, 2).Should(gexec.Exit(4))
 					Expect(sess.Err).To(gbytes.Say(`Timeout exceeded`))
 				})
@@ -88,7 +88,7 @@ var _ = Describe("set-domain", func() {
 
 			Context("when request is within the timeout", func() {
 				It("exits with status code of 0", func() {
-					sess := StartCFDOT("--timeout", "1", "set-domain", "any-domain")
+					sess := RunCFDot("--timeout", "1", "set-domain", "any-domain")
 					Eventually(sess).Should(gexec.Exit(0))
 				})
 			})
@@ -102,7 +102,7 @@ var _ = Describe("set-domain", func() {
 		})
 
 		It("set-domain fails with a relevant error message", func() {
-			sess := StartCFDOT("set-domain", "any-domain")
+			sess := RunCFDot("set-domain", "any-domain")
 			Eventually(sess, 2*time.Second).Should(gexec.Exit(4))
 			Expect(sess.Err).To(gbytes.Say("Invalid Response with status code: 500"))
 		})
