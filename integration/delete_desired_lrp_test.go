@@ -14,7 +14,7 @@ import (
 	"github.com/onsi/gomega/ghttp"
 )
 
-var _ = Describe("delete-desired-lrp", func() {
+var _ = FDescribe("delete-desired-lrp", func() {
 	var sess *gexec.Session
 
 	itValidatesBBSFlags("delete-desired-lrp")

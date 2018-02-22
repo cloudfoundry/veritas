@@ -218,3 +218,16 @@ func itHasNoArgs(command string, locketFlags bool) {
 		})
 	})
 }
+
+func StartCFDOT(args ...string) *gexec.Session {
+	cmdArgs := []string{
+		"--bbsURL", bbsServer.URL(),
+		"--caCertFile", locketCACertFile,
+		"--clientCertFile", locketClientCertFile,
+		"--clientKeyFile", locketClientKeyFile,
+	}
+	cmdArgs = append(cmdArgs, args...)
+	sess, err := gexec.Start(exec.Command(cfdotPath, cmdArgs...), GinkgoWriter, GinkgoWriter)
+	Expect(err).NotTo(HaveOccurred())
+	return sess
+}
