@@ -5,8 +5,6 @@ import (
 	"os/exec"
 	"time"
 
-	"code.cloudfoundry.org/lager/lagertest"
-
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
 	"github.com/onsi/gomega/gbytes"
@@ -17,14 +15,10 @@ import (
 var _ = Describe("claim-presence", func() {
 	itValidatesLocketFlags("claim-presence")
 
-	var logger *lagertest.TestLogger
-
 	BeforeEach(func() {
 		os.Setenv("CA_CERT_FILE", locketCACertFile)
 		os.Setenv("CLIENT_CERT_FILE", locketClientCertFile)
 		os.Setenv("CLIENT_KEY_FILE", locketClientKeyFile)
-
-		logger = lagertest.NewTestLogger("locket")
 	})
 
 	AfterEach(func() {

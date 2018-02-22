@@ -20,10 +20,9 @@ var _ = Describe("domains", func() {
 	Context("when the server responds with domains", func() {
 		var (
 			serverTimeout int
-			cfdotArgs     []string
 		)
+
 		BeforeEach(func() {
-			cfdotArgs = []string{"--bbsURL", bbsServer.URL()}
 			serverTimeout = 0
 		})
 
