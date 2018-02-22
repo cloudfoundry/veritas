@@ -27,7 +27,7 @@ var _ = Describe("desired-lrp", func() {
 		)
 
 		BeforeEach(func() {
-			cfdotArgs = []string{"--bbsURL", bbsServer.URL()}
+			cfdotArgs = append([]string{"--bbsURL", bbsServer.URL()}, certArgs...)
 		})
 
 		JustBeforeEach(func() {

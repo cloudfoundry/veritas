@@ -1,7 +1,6 @@
 package integration_test
 
 import (
-	"fmt"
 	"os"
 	"os/exec"
 	"time"
@@ -18,16 +17,9 @@ import (
 var _ = Describe("claim-presence", func() {
 	itValidatesLocketFlags("claim-presence")
 
-	var (
-		locketClientCertFile string
-		locketClientKeyFile  string
-		logger               *lagertest.TestLogger
-	)
+	var logger *lagertest.TestLogger
 
 	BeforeEach(func() {
-		wd, _ := os.Getwd()
-		locketClientCertFile = fmt.Sprintf("%s/fixtures/locketClient.crt", wd)
-		locketClientKeyFile = fmt.Sprintf("%s/fixtures/locketClient.key", wd)
 		os.Setenv("CA_CERT_FILE", locketCACertFile)
 		os.Setenv("CLIENT_CERT_FILE", locketClientCertFile)
 		os.Setenv("CLIENT_KEY_FILE", locketClientKeyFile)

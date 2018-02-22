@@ -3,10 +3,8 @@ package integration_test
 import (
 	"bytes"
 	"encoding/json"
-	"fmt"
 	"io/ioutil"
 	"net/http"
-	"os"
 	"os/exec"
 	"time"
 
@@ -21,27 +19,23 @@ import (
 	"github.com/onsi/gomega/ghttp"
 )
 
-var _ = Describe("cell-state", func() {
+var _ = FDescribe("cell-state", func() {
 	itValidatesTLSFlags("cell-state")
 
 	Context("when cell-state command is called", func() {
-		var presence1, presence2 *models.CellPresence
-		var rep1Server, rep2Server *ghttp.Server
-		var cellState1, cellState2 *rep.CellState
 		var (
-			clientCAFile   string
-			clientCertFile string
-			clientKeyFile  string
+			presence1, presence2   *models.CellPresence
+			rep1Server, rep2Server *ghttp.Server
+			cellState1, cellState2 *rep.CellState
+			cfdotArgs              []string
 		)
 
 		BeforeEach(func() {
-			rep1Server = ghttp.NewUnstartedServer()
-			wd, _ := os.Getwd()
-			clientCAFile = fmt.Sprintf("%s/fixtures/locketCA.crt", wd)
-			clientCertFile = fmt.Sprintf("%s/fixtures/locketClient.crt", wd)
-			clientKeyFile = fmt.Sprintf("%s/fixtures/locketClient.key", wd)
+			cfdotArgs = append([]string{"--bbsURL", bbsServer.URL()}, certArgs...)
 
-			tlsConfig, err := cfhttp.NewTLSConfig(clientCertFile, clientKeyFile, clientCAFile)
+			rep1Server = ghttp.NewUnstartedServer()
+
+			tlsConfig, err := cfhttp.NewTLSConfig(locketClientCertFile, locketClientKeyFile, locketCACertFile)
 			Expect(err).NotTo(HaveOccurred())
 			rep1Server.HTTPTestServer.TLS = tlsConfig
 			rep1Server.HTTPTestServer.StartTLS()
@@ -105,7 +99,8 @@ var _ = Describe("cell-state", func() {
 		})
 
 		It("returns the json encoding of the correct cell-state", func() {
-			cfdotCmd := exec.Command(cfdotPath, "--bbsURL", bbsServer.URL(), "cell-state", "cell-2")
+			cfdotArgs = append(cfdotArgs, "cell-state", "cell-2")
+			cfdotCmd := exec.Command(cfdotPath, cfdotArgs...)
 			sess, err := gexec.Start(cfdotCmd, GinkgoWriter, GinkgoWriter)
 			Expect(err).NotTo(HaveOccurred())
 			Eventually(sess).Should(gexec.Exit(0))
@@ -134,12 +129,11 @@ var _ = Describe("cell-state", func() {
 					),
 				)
 
-				cfdotCmd := exec.Command(
-					cfdotPath,
-					"--bbsURL", bbsServer.URL(),
+				cfdotArgs = append(cfdotArgs,
 					"--timeout", "1",
 					"cell-state", "cell-2",
 				)
+				cfdotCmd := exec.Command(cfdotPath, cfdotArgs...)
 				var err error
 				sess, err = gexec.Start(cfdotCmd, GinkgoWriter, GinkgoWriter)
 				Expect(err).NotTo(HaveOccurred())
@@ -172,17 +166,9 @@ var _ = Describe("cell-state", func() {
 		})
 
 		Context("when the rep has mutual TLS enabled", func() {
-			var args []string
-
 			It("uses the correct TLS config", func() {
-				args = []string{
-					"--bbsURL", bbsServer.URL(),
-					"--caCertFile", clientCAFile,
-					"--clientCertFile", clientCertFile,
-					"--clientKeyFile", clientKeyFile,
-					"cell-state", "cell-1",
-				}
-				cfdotCmd := exec.Command(cfdotPath, args...)
+				cfdotArgs = append(cfdotArgs, "cell-state", "cell-1")
+				cfdotCmd := exec.Command(cfdotPath, cfdotArgs...)
 				sess, err := gexec.Start(cfdotCmd, GinkgoWriter, GinkgoWriter)
 				Expect(err).NotTo(HaveOccurred())
 				Eventually(sess).Should(gexec.Exit(0))
@@ -194,14 +180,8 @@ var _ = Describe("cell-state", func() {
 
 			Context("cell-states", func() {
 				It("returns the json encoding of the cell-states", func() {
-					args = []string{
-						"--bbsURL", bbsServer.URL(),
-						"--caCertFile", clientCAFile,
-						"--clientCertFile", clientCertFile,
-						"--clientKeyFile", clientKeyFile,
-						"cell-states",
-					}
-					cfdotCmd := exec.Command(cfdotPath, args...)
+					cfdotArgs = append(cfdotArgs, "cell-states")
+					cfdotCmd := exec.Command(cfdotPath, cfdotArgs...)
 					sess, err := gexec.Start(cfdotCmd, GinkgoWriter, GinkgoWriter)
 					Expect(err).NotTo(HaveOccurred())
 					Eventually(sess).Should(gexec.Exit(0))
@@ -238,15 +218,8 @@ var _ = Describe("cell-state", func() {
 						),
 					)
 
-					cfdotCmd := exec.Command(
-						cfdotPath,
-						"--bbsURL", bbsServer.URL(),
-						"--caCertFile", clientCAFile,
-						"--clientCertFile", clientCertFile,
-						"--clientKeyFile", clientKeyFile,
-						"--timeout", "1",
-						"cell-states",
-					)
+					cfdotArgs = append(cfdotArgs, "--timeout", "1", "cell-states")
+					cfdotCmd := exec.Command(cfdotPath, cfdotArgs...)
 					var err error
 					sess, err = gexec.Start(cfdotCmd, GinkgoWriter, GinkgoWriter)
 					Expect(err).NotTo(HaveOccurred())
