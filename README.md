@@ -19,6 +19,8 @@ Usage:
 Available Commands:
   actual-lrp-groups            List actual LRP groups
   actual-lrp-groups-for-guid   List actual LRP groups for a process guid
+  actual-lrps                  List actual LRPs
+  actual-lrps-for-guid         List actual LRPs for a process guid
   cancel-task                  Cancel task
   cell                         Show the specified cell presence
   cell-state                   Show the specified cell state
@@ -37,6 +39,7 @@ Available Commands:
   help                         Get help on [command]
   locks                        List Locket locks
   lrp-events                   Subscribe to BBS LRP events
+  lrp-events-r1                Subscribe to BBS LRP events
   presences                    List Locket presences
   release-lock                 Release Locket lock
   retire-actual-lrp            Retire actual LRP by index and process guid
